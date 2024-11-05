@@ -31,3 +31,5 @@ int main() {
     
     return 0;
 }
+output:Sorted array
+11 12 22 25 64 
