@@ -1,0 +1,18 @@
+struct Node {
+    int key;
+    struct Node *left, *right;
+};
+
+struct Node* rightRotate(struct Node* x) {
+    struct Node* y = x->left;
+    x->left = y->right;
+    y->right = x;
+    return y;
+}
+
+struct Node* leftRotate(struct Node* x) {
+    struct Node* y = x->right;
+    x->right = y->left;
+    y->left = x;
+    return y;
+}
