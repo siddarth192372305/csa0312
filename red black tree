@@ -1,0 +1,5 @@
+typedef struct Node {
+    int data;
+    int color; // 1 for Red, 0 for Black
+    struct Node *left, *right, *parent;
+} Node;
