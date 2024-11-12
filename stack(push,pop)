@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+struct Stack {
+    int top;
+    int items[MAX];
+};
+
+void initStack(struct Stack* s) {
+    s->top = -1;
+}
+
+int isFull(struct Stack* s) {
+    return s->top == MAX - 1;
+}
+
+int isEmpty(struct Stack* s) {
+    return s->top == -1;
+}
+
+void push(struct Stack* s, int item) {
+    if (isFull(s)) {
+        printf("Stack Overflow\n");
+        return;
+    }
+    s->items[++s->top] = item;
+}
+
+int pop(struct Stack* s) {
+    if (isEmpty(s)) {
+        printf("Stack Underflow\n");
+        return -1; // Return an error value
+    }
+    return s->items[s->top--];
+}
+
+int main() {
+    struct Stack s;
+    initStack(&s);
+    
+    push(&s, 10);
+    push(&s, 20);
+    printf("Popped item: %d\n", pop(&s));
+    
+    return 0;
+}
