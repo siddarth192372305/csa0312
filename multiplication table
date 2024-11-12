@@ -1,0 +1,15 @@
+#include <stdio.h>
+
+int main() {
+    int i, j;
+    int n = 10; // Size of the multiplication table
+
+    printf("Multiplication Table:\n");
+    for (i = 1; i <= n; i++) {
+        for (j = 1; j <= n; j++) {
+            printf("%4d", i * j); // Print the product with formatting
+        }
+        printf("\n"); // New line after each row
+    }
+    return 0;
+}
