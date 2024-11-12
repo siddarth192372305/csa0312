@@ -1,0 +1,139 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a node in the doubly linked list
+struct Node {
+    int data;           // Data part of the node
+    struct Node* next;  // Pointer to the next node
+    struct Node* prev;  // Pointer to the previous node
+};
+
+// Function to create a new node with given data
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node)); // Allocate memory
+    newNode->data = data;      // Set data for the new node
+    newNode->next = NULL;      // Next pointer is NULL (no next node yet)
+    newNode->prev = NULL;      // Prev pointer is NULL (no previous node yet)
+    return newNode;
+}
+
+// Insert a node at the beginning of the list
+void insertAtBeginning(struct Node** head, int data) {
+    struct Node* newNode = createNode(data);
+    if (*head != NULL) {
+        (*head)->prev = newNode;   // Point old head's prev to new node
+    }
+    newNode->next = *head;        // New node's next points to old head
+    *head = newNode;              // Update head to point to new node
+}
+
+// Insert a node at the end of the list
+void insertAtEnd(struct Node** head, int data) {
+    struct Node* newNode = createNode(data);
+    if (*head == NULL) {
+        *head = newNode;          // If the list is empty, set the new node as head
+        return;
+    }
+    
+    struct Node* temp = *head;
+    while (temp->next != NULL) { // Traverse to the last node
+        temp = temp->next;
+    }
+    
+    temp->next = newNode;        // Last node's next points to new node
+    newNode->prev = temp;        // New node's prev points to last node
+}
+
+// Display the list from head to tail (forward)
+void displayForward(struct Node* head) {
+    struct Node* temp = head;
+    while (temp != NULL) {
+        printf("%d ", temp->data);  // Print the data of the current node
+        temp = temp->next;          // Move to the next node
+    }
+    printf("\n");
+}
+
+// Display the list from tail to head (backward)
+void displayBackward(struct Node* head) {
+    struct Node* temp = head;
+    while (temp != NULL && temp->next != NULL) {  // Move to the last node
+        temp = temp->next;
+    }
+    
+    while (temp != NULL) {  // Traverse backward
+        printf("%d ", temp->data);
+        temp = temp->prev;
+    }
+    printf("\n");
+}
+
+// Delete a node by value from the list
+void deleteNode(struct Node** head, int data) {
+    if (*head == NULL) {
+        printf("The list is empty.\n");
+        return;
+    }
+    
+    struct Node* temp = *head;
+    
+    // If the node to be deleted is the head node
+    if (temp->data == data) {
+        *head = temp->next;  // Move head to the next node
+        if (*head != NULL) {
+            (*head)->prev = NULL;  // If there is a new head, set its prev to NULL
+        }
+        free(temp);  // Free the old head node
+        return;
+    }
+    
+    // Search for the node to be deleted
+    while (temp != NULL && temp->data != data) {
+        temp = temp->next;
+    }
+    
+    if (temp == NULL) {
+        printf("Node with data %d not found.\n", data);
+        return;
+    }
+    
+    // If the node is found, adjust pointers to remove it from the list
+    if (temp->next != NULL) {
+        temp->next->prev = temp->prev;  // Set next node's prev pointer to current node's prev
+    }
+    if (temp->prev != NULL) {
+        temp->prev->next = temp->next;  // Set prev node's next pointer to current node's next
+    }
+    
+    free(temp);  // Free the node
+}
+
+// Main function to test the Doubly Linked List
+int main() {
+    struct Node* head = NULL;
+
+    // Inserting elements into the doubly linked list
+    insertAtBeginning(&head, 10);
+    insertAtBeginning(&head, 20);
+    insertAtEnd(&head, 30);
+    insertAtEnd(&head, 40);
+    
+    // Display the list forward
+    printf("List displayed forward:\n");
+    displayForward(head);
+    
+    // Display the list backward
+    printf("List displayed backward:\n");
+    displayBackward(head);
+    
+    // Deleting a node by value
+    deleteNode(&head, 20);
+    printf("List after deleting 20:\n");
+    displayForward(head);
+    
+    deleteNode(&head, 40);
+    printf("List after deleting 40:\n");
+    displayForward(head);
+    
+    return 0;
+}
